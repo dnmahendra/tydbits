@@ -1,0 +1,28 @@
+
+.card-img-top {
+	position: relative;
+/*	background-image: url(http://placehold.it/200x200);
+*/
+	width: 200px;
+	height: 200px;
+}
+
+.audios {
+	position: absolute;
+	z-index: 1;
+	width: 200px;
+}
+
+.glyphicon-heart {
+		font-size: 2em;
+	color: red;
+}
+
+.btn {
+	    background-color: Transparent;
+    background-repeat:no-repeat;
+    border: none;
+    cursor:pointer;
+    overflow: hidden;
+    outline:none;
+}
