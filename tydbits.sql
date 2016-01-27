@@ -4,7 +4,8 @@ CREATE TABLE users (
 	id SERIAL8 PRIMARY KEY,
 	name VARCHAR(100),
 	email VARCHAR(100) NOT NULL,
-	password_digest VARCHAR(400) NOT NULL
+	password_digest VARCHAR(400) NOT NULL,
+	avatar VARCHAR(400)
 );
 
 CREATE TABLE bits (
@@ -12,7 +13,8 @@ CREATE TABLE bits (
 	name VARCHAR(100),
 	description VARCHAR(100),
 	category_id INTEGER,
-	url varchar(200)
+	url varchar(200),
+	thumbnail VARCHAR(400)
 );
 
 CREATE TABLE categories (

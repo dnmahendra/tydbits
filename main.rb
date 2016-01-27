@@ -68,10 +68,20 @@ user = User.find_by(name: params[:name])
 		redirect to '/'
 
 	else
+		avatar = resize_image(params[:avatar][:tempfile])
+
+		#Upload to Amazon S3
+		s3 = Aws::S3::Resource.new(region: 'ap-southeast-2')
+
+		img = s3.bucket('tydbits').object("Avatars/#{image_name}")
+		img.upload_file(avatar.path, acl:'public-read')
+		img_url = img.public_url
+
 		newuser = User.new
 		newuser[:name] = params[:name]
 		newuser[:email] = params[:email]
 		newuser.password = params[:pwd]
+		newuser[:avatar] = img_url
 
 		if newuser.save
 			erb :login
