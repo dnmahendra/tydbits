@@ -1,7 +1,7 @@
 
 class Bit < ActiveRecord::Base
 	belongs_to :category
-	has_many :likes, as: :attachable, dependent: :destroy
+	has_many :likes, dependent: :destroy
 
 	belongs_to :user
 
