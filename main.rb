@@ -121,8 +121,6 @@ end
 
 post '/upload' do
 
-	binding.pry
-
 	file = params[:file][:tempfile]
 	thumbnail = params[:avatar][:tempfile]
 	image_name = params[:avatar][:filename]
@@ -192,7 +190,7 @@ put '/bits/:id' do
 	bit = Bit.find(params[:id])
 
 	if !params[:file].nil?
-		binding.pry
+
 		file = params[:file][:tempfile]
 
 		s3 = Aws::S3::Resource.new(region: 'ap-southeast-2')
@@ -233,7 +231,6 @@ delete '/bits/:id' do
 
 	image = bit.thumbnail.split('/').last
 
-	binding.pry
 	s3 = Aws::S3::Resource.new(region: 'ap-southeast-2')
 
 	bucket = s3.bucket('tydbits')
