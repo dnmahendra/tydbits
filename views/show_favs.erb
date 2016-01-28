@@ -1,0 +1,19 @@
+<div class="container">
+  <div class="row">
+  	<% @bits.each do |b| %>
+    <div class="col-sm-12 col-md-3">
+
+		<div class="thumbnail">
+      		<img src="<%= b.thumbnail ? b.thumbnail : 'http://placehold.it/200x200' %>" alt="...">
+      	<div class="caption">
+        	<h5><%= b.name %></h5>
+        	<p><%= b.description %></p>
+         	<a href ="#" class="btn btn-danger btn-xs" type="button">Likes
+  			<span class="badge"><%= b.likes.count %></span></a>
+     	</div>
+    	</div>
+
+  </div>
+      	<% end %>
+</div>
+</div>

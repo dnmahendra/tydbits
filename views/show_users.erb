@@ -11,12 +11,13 @@
   			<div class="media-body">
     			<h4 class="media-heading"><%= u.name %></h4>
     			<p><%= u.email %></p>
-				<button class="btn btn-info btn-xs" type="button">Uploads
+
+				<a href="/uploads/<%= u.id %>" class="btn btn-info btn-xs" type="button">Uploads
   				<span class="badge"><%= u.bits.count %></span>
-				</button>
-    			<button class="btn btn-warning btn-xs" type="button">fav bits
+				</a>
+    			<a href ="/favs/<%= u.id %>" class="btn btn-warning btn-xs" type="button">fav bits
   				<span class="badge"><%= u.likes.count %></span>
-				</button>
+				</a>
   			</div>
 		</div>
 	</div>

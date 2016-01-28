@@ -29,7 +29,7 @@ helpers do
 
 	def resize_image(thumbnail)
 		image = MiniMagick::Image.new(thumbnail.path)
-		image.resize "200x200"
+		image.resize "200x200!"
 		return image
 	end
 
@@ -229,17 +229,19 @@ delete '/bits/:id' do
 
 	bit = Bit.find(params[:id])
 
-	image = bit.thumbnail.split('/').last
+	if !bit.thumbnail.nil?
+		image = bit.thumbnail.split('/').last
 
-	s3 = Aws::S3::Resource.new(region: 'ap-southeast-2')
+		s3 = Aws::S3::Resource.new(region: 'ap-southeast-2')
 
-	bucket = s3.bucket('tydbits')
+		bucket = s3.bucket('tydbits')
 
-	obj = bucket.object(bit.name)
-	obj.delete
+		obj = bucket.object(bit.name)
+		obj.delete
 
-	obj = bucket.object("Avatars/#{image}")
-	obj.delete
+		obj = bucket.object("Avatars/#{image}")
+		obj.delete
+	end
 
 	bit.destroy
 
@@ -288,7 +290,20 @@ get '/users' do
 	erb :show_users
 end
 
+get '/uploads/:id' do
 
+	@bits = Bit.where(user_id: params[:id])
+
+	erb :show_uploads
+end
+
+
+get '/favs/:id' do
+
+	@bits = Bit.joins(:likes).where(user_id: params[:id])
+
+	erb :show_favs
+end
 
 
 # binding.pry

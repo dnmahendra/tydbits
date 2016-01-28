@@ -17,6 +17,7 @@ CREATE TABLE bits (
 	thumbnail VARCHAR(400),
 	user_id SERIAL8
 );
+ALTER TABLE bits ADD  FOREIGN KEY(user_id) REFERENCES users(id);
 
 CREATE TABLE categories (
 	id SERIAL4 PRIMARY KEY,
@@ -28,9 +29,11 @@ CREATE TABLE likes (
 	user_id SERIAL8 NOT NULL,
 	bit_id SERIAL8 NOT NULL
 );
+ALTER TABLE likes ADD  FOREIGN KEY(user_id) REFERENCES users(id);
+ALTER TABLE likes ADD  FOREIGN KEY(bit_id) REFERENCES bits(id);
 
 INSERT INTO categories (name) VALUES ('sounds');
 INSERT INTO categories (name) VALUES ('stickers');
 INSERT INTO categories (name) VALUES ('quotes');
-INSERT INTO categories (name) VALUES ('users');
+
 
