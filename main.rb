@@ -69,6 +69,7 @@ user = User.find_by(name: params[:name])
 
 	else
 		avatar = resize_image(params[:avatar][:tempfile])
+		image_name = params[:avatar][:filename]
 
 		#Upload to Amazon S3
 		s3 = Aws::S3::Resource.new(region: 'ap-southeast-2')
