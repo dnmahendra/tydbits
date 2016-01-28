@@ -14,7 +14,8 @@ CREATE TABLE bits (
 	description VARCHAR(100),
 	category_id INTEGER,
 	url varchar(200),
-	thumbnail VARCHAR(400)
+	thumbnail VARCHAR(400),
+	user_id SERIAL8
 );
 
 CREATE TABLE categories (
@@ -28,7 +29,8 @@ CREATE TABLE likes (
 	bit_id SERIAL8 NOT NULL
 );
 
-INSERT INTO category (name) VALUES ('sounds');
-INSERT INTO category (name) VALUES ('stickers');
-INSERT INTO category (name) VALUES ('quotes');
+INSERT INTO categories (name) VALUES ('sounds');
+INSERT INTO categories (name) VALUES ('stickers');
+INSERT INTO categories (name) VALUES ('quotes');
+INSERT INTO categories (name) VALUES ('users');
 

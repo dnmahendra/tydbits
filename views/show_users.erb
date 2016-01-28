@@ -1,0 +1,24 @@
+
+<div class="container">
+	<%  @users.each do |u| %>
+	<div class="well">
+		<div class="media">
+  			<div class="media-left">
+    			<a href="#">
+      			<img class="media-object" src="<%= current_user.avatar ? current_user.avatar : 'http://placehold.it/100x100' %>"alt="...">
+    			</a>
+  			</div>
+  			<div class="media-body">
+    			<h4 class="media-heading"><%= u.name %></h4>
+    			<p><%= u.email %></p>
+				<button class="btn btn-info btn-xs" type="button">Uploads
+  				<span class="badge"><%= u.bits.count %></span>
+				</button>
+    			<button class="btn btn-warning btn-xs" type="button">fav bits
+  				<span class="badge"><%= u.likes.count %></span>
+				</button>
+  			</div>
+		</div>
+	</div>
+	<% end %>
+</div>

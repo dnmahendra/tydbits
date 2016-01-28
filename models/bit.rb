@@ -1,7 +1,9 @@
 
 class Bit < ActiveRecord::Base
 	belongs_to :category
-	has_many :likes
+	has_many :likes, dependant :destroy
+
+	belongs_to :user
 
 	
 	validates :name, presence: true

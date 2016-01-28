@@ -1,10 +1,12 @@
+
 <nav class="navbar navbar-default">
 	<div class="container">
 		<div class="navbar-header">
 			<ul class="nav navbar-nav">
       			<% @categories.each do |c| %>
-        		<li><a href="#"><%= c.name %></a></li>
+        		<li><a href="/?<%= c.id %>"><%= c.name %></a></li>
       			<% end %>
+      			<li><a href="/users">Users</a></li>
      		</ul>
 		</div>
 	</div>
@@ -14,7 +16,8 @@
 <div class="container">
 	<div class="row">
 		<% @bits.each do |b| %>
-			<div class="col-md-3 col-sm-6">
+		<div class="col-md-3 col-sm-6">
+		<div class="well well-sm">
 	           	<audio class="audios" controls
 					<source src="<%= b.url %>" type="audio/mpeg">
 				</audio>
@@ -26,10 +29,19 @@
 		        	<h4 class="card-title"><%= b.name %></h4>
 		        	<p class="card-text"><%= b.description %></p>
 		        	<form class="likes" action="/likes/<%= b.id %>" method="post">
-		        		<p><button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-heart" aria-hidden="true"></span><%= b.likes.count %></button></p>
+		        	<button type="submit" class="btn btn-link"><i class="glyphicon glyphicon-heart"></i><span class="badge"><%= b.likes.count %></span>
+		        		</button>
 		        	</form>
+		        	<% if logged_in?  %>
+		        		<a href="/bits/<%= b.id %>/edit" class="btn btn-sm btn-primary" role="button">Edit</a>
+		        		<form action="/bits/<%= b.id %>" method="post">
+			        		<input type="hidden" name="_method" value="delete">
+			        		<button class="btn btn-sm btn-danger" role="button">Delete</button>
+		        		</form>
+		        	<% end %>
 	      		</div>
 	    	</div>
+	    </div>
     	<% end %>
 	</div>
 </div>

@@ -1,0 +1,30 @@
+<div class="container">
+  <div class="well">
+<form role="form" action="/session/<%= session[:user_id] %>" method="post" accept-charset="utf-8" enctype="multipart/form-data">
+  <div class="form-group">
+    <label for="email">Pick UserName:</label>
+    <input type="text" class="form-control" name="name" value="<%= session[:user_name] %>">
+  </div>
+  <div class="form-group">
+    <label for="email">Email address:</label>
+    <input type="email" class="form-control" name="email" value="<%= current_user.email %>">
+  </div>
+  <div class="form-group">
+    <label for="pwd">Password:</label>
+    <input type="password" class="form-control" name="pwd">
+  </div>
+<div class="form-group">
+  <label for="">change Avatar:</label>
+    <div class="input-group">
+      <input type="text"  class="form-control" readonly>
+      <span class="input-group-btn">
+        <span class="btn btn-primary btn-file">
+          Browse&hellip; <input type="file" name="avatar">
+        </span>
+      </span>
+  </div>
+</div>
+  <button type="submit" class="btn btn-warning">Update</button>
+</form>
+  </div>
+</div>

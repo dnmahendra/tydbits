@@ -94,6 +94,13 @@ get '/session/new' do
 	erb :login
 end
 
+get '/user/show' do
+
+	@bit = Bit.where(:user_id => current_user.id)
+	@like = Like.where(:user_id => current_user.id)
+	erb :show_user
+end
+
 get '/user/new' do
 	erb :singup
 end
@@ -113,6 +120,8 @@ erb :new
 end
 
 post '/upload' do
+
+	binding.pry
 
 	file = params[:file][:tempfile]
 	thumbnail = params[:avatar][:tempfile]
@@ -167,5 +176,122 @@ post '/likes/:bit_id' do
 		redirect to '/session/new'
 	end
 end
+
+#editing bits
+get '/bits/:id/edit' do
+
+	@categories = Category.all
+
+	@bit = Bit.find(params[:id])
+	erb :edit_bit
+
+end
+
+put '/bits/:id' do
+
+	bit = Bit.find(params[:id])
+
+	if !params[:file].nil?
+		binding.pry
+		file = params[:file][:tempfile]
+
+		s3 = Aws::S3::Resource.new(region: 'ap-southeast-2')
+
+		obj = s3.bucket('tydbits').object(params[:name])
+		obj.upload_file(file, acl:'public-read')
+		url = obj.public_url
+		bit.url = url
+	end
+
+	if !params[:avatar].nil?
+		thumbnail = params[:avatar][:tempfile]
+		image_name = params[:avatar][:filename]
+
+		image = resize_image(thumbnail)
+
+		s3 = Aws::S3::Resource.new(region: 'ap-southeast-2')
+
+		img = s3.bucket('tydbits').object("Avatars/#{image_name}")
+		img.upload_file(image.path, acl:'public-read')
+		thumbnail = img.public_url
+		bit.thumbnail = thumbnail
+	end
+
+
+	bit.name = params[:name]
+	bit.description = params[:description]
+	bit.category_id = params[:category_id]
+
+	bit.save
+	redirect to "/"
+end
+
+#delete bit
+delete '/bits/:id' do
+
+	bit = Bit.find(params[:id])
+
+	image = bit.thumbnail.split('/').last
+
+	binding.pry
+	s3 = Aws::S3::Resource.new(region: 'ap-southeast-2')
+
+	bucket = s3.bucket('tydbits')
+
+	obj = bucket.object(bit.name)
+	obj.delete
+
+	obj = bucket.object("Avatars/#{image}")
+	obj.delete
+
+	bit.destroy
+
+	redirect to '/'
+
+end 
+
+#User edit
+get '/user/edit' do
+
+
+	erb :edit_user
+end
+
+post '/session/:id' do
+
+
+	user = User.find(params[:id])
+	user[:name] = params[:name]
+	user[:email] = params[:email]
+	user.password = params[:pwd]
+
+	if !params[:avatar].nil?
+
+		avatar = resize_image(params[:avatar][:tempfile])
+		name = params[:avatar][:filename]
+
+		#Upload to Amazon S3
+		s3 = Aws::S3::Resource.new(region: 'ap-southeast-2')
+
+		img = s3.bucket('tydbits').object("Avatars/#{name}")
+		img.upload_file(avatar.path, acl:'public-read')
+		img_url = img.public_url
+		user[:avatar] = img_url
+
+	end
+
+	if user.save
+		erb :login
+	end
+end
+
+get '/users' do
+
+	@users = User.all
+	erb :show_users
+end
+
+
+
 
 # binding.pry
