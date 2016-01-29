@@ -9,9 +9,9 @@
   			<div class="media-body">
     			<h4 class="media-heading"><%= current_user.name %></h4>
     			<p><%= current_user.email %></p>
-				<button class="btn btn-info btn-xs" type="button">Uploads
+				<a href="/uploads/<%= current_user.id %>" class="btn btn-info btn-xs" type="button">Uploads
   				<span class="badge"><%= @bit.count %></span>
-				</button>
+				</a>
     			<button class="btn btn-warning btn-xs" type="button">fav bits
   				<span class="badge"><%= @like.count %></span>
 				</button>
