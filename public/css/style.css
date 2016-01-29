@@ -1,5 +1,5 @@
 
-.card-img-top {
+.thumbnail {
 	position: relative;
 /*	background-image: url(http://placehold.it/200x200);
 */
@@ -42,3 +42,16 @@
     margin: 0 auto;
     text-align: center;
 }
+
+.edit, .delete {
+    display: inline-block;
+}
+
+
+
+
+
+
+
+
+

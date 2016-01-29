@@ -17,33 +17,22 @@
 	<div class="row">
 		<% @bits.each do |b| %>
 		<div class="col-md-3 col-sm-6">
-		<div class="well well-sm">
+		<div class="well">
 			<% if b.category_id == 1 %>
 	           	<audio class="audios" controls
 					<source src="<%= b.url %>" type="audio/mpeg">
 				</audio>
-	            <div class="card-img-top"> 
 	             	<img src="<%= b.thumbnail ? b.thumbnail : 'http://placehold.it/200x200' %>" alt="">
-	            </div>
 			<% else %>
-				<div class="card-img-top"> 
 	             	<img src="<%= b.url ? b.url : 'http://placehold.it/200x200' %>" alt="">
-	            </div>
 			<% end %>
-	        	<div class="card-block">
-		        	<h4 class="card-title"><%= b.name %></h4>
+	        	<div class="caption">
+		        	<h5><%= b.name %></h5>
 		        	<p class="card-text"><%= b.description %></p>
 		        	<form class="likes" action="/likes/<%= b.id %>" method="post">
-		        	<button type="submit" class="btn btn-link"><i class="glyphicon glyphicon-heart"></i><span class="badge"><%= b.likes.count %></span>
-		        		</button>
+			        	<button type="submit" class="btn btn-link" <%= "disabled=disabled" if liked?(b.id) %>><i class="glyphicon glyphicon-heart"></i><span class="badge"><%= b.likes.count %></span>
+			        	</button>
 		        	</form>
-		        	<% if logged_in?  %>
-		        		<a href="/bits/<%= b.id %>/edit" class="btn btn-sm btn-primary" role="button">Edit</a>
-		        		<form action="/bits/<%= b.id %>" method="post">
-			        		<input type="hidden" name="_method" value="delete">
-			        		<button class="btn btn-sm btn-danger" role="button">Delete</button>
-		        		</form>
-		        	<% end %>
 	      		</div>
 	    	</div>
 	    </div>

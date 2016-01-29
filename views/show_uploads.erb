@@ -10,6 +10,13 @@
         	<p><%= b.description %></p>
          	<a href ="#" class="btn btn-warning btn-xs" type="button">Likes
   			<span class="badge"><%= b.likes.count %></span></a>
+  		<% if b.user_id == current_user.id %>
+     		<a href="/bits/<%= b.id %>/edit" class="btn btn-xs btn-primary edit" role="button">Edit</a>
+		    <form action="/bits/<%= b.id %>" method="post">
+			    <input type="hidden" name="_method" value="delete">
+			     <button class="btn btn-xs btn-danger delete" role="button">Delete</button>
+		    </form>
+     	<% end %>
      	</div>
     	</div>
   </div>
