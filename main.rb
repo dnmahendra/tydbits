@@ -135,6 +135,7 @@ end
 
 post '/upload' do
 
+bit = Bit.new
 if params[:category_id].to_i == 1
 
 	file = params[:file][:tempfile]
@@ -166,7 +167,7 @@ obj = s3.bucket('tydbits').object(params[:name])
 obj.upload_file(file.path, acl:'public-read')
 url = obj.public_url
 
-bit = Bit.new
+
 bit[:name] = params[:name]
 bit[:description] = params[:description]
 bit[:category_id] = params[:category_id]
