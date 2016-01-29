@@ -135,13 +135,22 @@ end
 
 post '/upload' do
 
-if params[:category_id] == 1
+if params[:category_id].to_i == 1
 
 	file = params[:file][:tempfile]
-	thumbnail = params[:avatar][:tempfile]
-	image_name = params[:avatar][:filename]
 
-	image = resize_image(thumbnail)
+	if !params[:avatar].nil?
+		thumbnail = params[:avatar][:tempfile]
+		image_name = params[:avatar][:filename]
+
+		image = resize_image(thumbnail)
+		s3 = Aws::S3::Resource.new(region: 'ap-southeast-2')
+
+		img = s3.bucket('tydbits').object("Avatars/#{image_name}")
+		img.upload_file(image.path, acl:'public-read')
+		img_url = img.public_url
+		bit[:thumbnail] = img_url
+	end
 
 else
 
@@ -153,12 +162,6 @@ end
 #Upload to Amazon S3
 s3 = Aws::S3::Resource.new(region: 'ap-southeast-2')
 
-if params[:category_id] == 1
-img = s3.bucket('tydbits').object("Avatars/#{image_name}")
-img.upload_file(image.path, acl:'public-read')
-img_url = img.public_url
-bit[:thumbnail] = img_url
-end
 obj = s3.bucket('tydbits').object(params[:name])
 obj.upload_file(file.path, acl:'public-read')
 url = obj.public_url
