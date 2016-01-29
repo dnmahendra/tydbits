@@ -33,6 +33,12 @@ helpers do
 		return image
 	end
 
+	def resize_avatar(avatar)
+		image = MiniMagick::Image.new(avatar.path)
+		image.resize "100x100!"
+		return image
+	end
+
 	def liked?(bit_id)
 		if logged_in?
 			if Like.find_by(user_id: current_user.id, bit_id: bit_id)
@@ -47,8 +53,12 @@ end
 get '/' do
 
 	@categories = Category.all
-	@bits = Bit.all
 
+	if params[:category_id] 
+		@bits = Bit.where(category_id: params[:category_id])
+	else
+		@bits = Bit.all
+	end
 	@likes = Like.new
 	erb :index
 end
@@ -68,7 +78,7 @@ user = User.find_by(name: params[:name])
 		redirect to '/'
 
 	else
-		avatar = resize_image(params[:avatar][:tempfile])
+		avatar = resize_avatar(params[:avatar][:tempfile])
 		image_name = params[:avatar][:filename]
 
 		#Upload to Amazon S3
@@ -114,13 +124,18 @@ end
 
 #show new bit form
 get '/bits/new' do
+	if logged_in?
 
-@categories = Category.all
-
-erb :new
+		@categories = Category.all
+		erb :new
+	else
+		erb :login
+	end
 end
 
 post '/upload' do
+
+if params[:category_id] == 1
 
 	file = params[:file][:tempfile]
 	thumbnail = params[:avatar][:tempfile]
@@ -128,15 +143,24 @@ post '/upload' do
 
 	image = resize_image(thumbnail)
 
+else
+
+	file = params[:file][:tempfile]
+
+	file = resize_image(file)
+end
+
 #Upload to Amazon S3
 s3 = Aws::S3::Resource.new(region: 'ap-southeast-2')
 
+if params[:category_id] == 1
 img = s3.bucket('tydbits').object("Avatars/#{image_name}")
 img.upload_file(image.path, acl:'public-read')
 img_url = img.public_url
-
+bit[:thumbnail] = img_url
+end
 obj = s3.bucket('tydbits').object(params[:name])
-obj.upload_file(file, acl:'public-read')
+obj.upload_file(file.path, acl:'public-read')
 url = obj.public_url
 
 bit = Bit.new
@@ -144,7 +168,7 @@ bit[:name] = params[:name]
 bit[:description] = params[:description]
 bit[:category_id] = params[:category_id]
 bit[:url] = url
-bit[:thumbnail] = img_url
+bit[:user_id] = current_user.id
 
 bit.save
 
@@ -267,7 +291,7 @@ post '/session/:id' do
 
 	if !params[:avatar].nil?
 
-		avatar = resize_image(params[:avatar][:tempfile])
+		avatar = resize_avatar(params[:avatar][:tempfile])
 		name = params[:avatar][:filename]
 
 		#Upload to Amazon S3
@@ -286,9 +310,12 @@ post '/session/:id' do
 end
 
 get '/users' do
-
-	@users = User.all
-	erb :show_users
+	if logged_in?
+		@users = User.all
+		erb :show_users
+	else
+		erb :login
+	end
 end
 
 get '/uploads/:id' do

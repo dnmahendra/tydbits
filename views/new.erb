@@ -1,4 +1,5 @@
 <div class="container">
+<div class="well well-sm">
 <form role="form" action="/upload" method="post" accept-charset="utf-8" enctype="multipart/form-data">
   <div class="form-group">
     <label for="name">Name:</label>
@@ -18,7 +19,7 @@
   </select>
 </div>
 <div class="form-group">
-<label for="">change bit:</label>
+<label for="">Upload bit:</label>
   <div class="input-group">
       <span class="input-group-btn">
         <span class="btn btn-primary btn-file">
@@ -29,16 +30,17 @@
   </div>
 </div>
 <div class="form-group">
-  <label for="">change Avatar:</label>
+  <label for="">Upload Thumbnail:</label>
     <div class="input-group">
       <span class="input-group-btn">
         <span class="btn btn-primary btn-file">
           Browse&hellip; <input type="file" name="avatar">
         </span>
       </span>
-      <input type="text"  class="form-control" readonly>
+      <input type="text"  class="form-control" placeholder="only for sound bits" readonly>
   </div>
 </div>
   <button type="submit" class="btn btn-default">Upload  &uarr;</button>
 </form>
+</div>
 </div>

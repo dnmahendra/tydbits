@@ -4,7 +4,7 @@
 		<div class="navbar-header">
 			<ul class="nav navbar-nav">
       			<% @categories.each do |c| %>
-        		<li><a href="/?<%= c.id %>"><%= c.name %></a></li>
+        		<li><a href="/?category_id=<%= c.id %>"><%= c.name %></a></li>
       			<% end %>
       			<li><a href="/users">Users</a></li>
      		</ul>
@@ -18,13 +18,18 @@
 		<% @bits.each do |b| %>
 		<div class="col-md-3 col-sm-6">
 		<div class="well well-sm">
+			<% if b.category_id == 1 %>
 	           	<audio class="audios" controls
 					<source src="<%= b.url %>" type="audio/mpeg">
 				</audio>
 	            <div class="card-img-top"> 
 	             	<img src="<%= b.thumbnail ? b.thumbnail : 'http://placehold.it/200x200' %>" alt="">
 	            </div>
-
+			<% else %>
+				<div class="card-img-top"> 
+	             	<img src="<%= b.url ? b.url : 'http://placehold.it/200x200' %>" alt="">
+	            </div>
+			<% end %>
 	        	<div class="card-block">
 		        	<h4 class="card-title"><%= b.name %></h4>
 		        	<p class="card-text"><%= b.description %></p>

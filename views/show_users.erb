@@ -1,11 +1,12 @@
 
 <div class="container">
 	<%  @users.each do |u| %>
+	<div class="col-md-4 col-sm-6">
 	<div class="well">
 		<div class="media">
   			<div class="media-left">
     			<a href="#">
-      			<img class="media-object" src="<%= current_user.avatar ? current_user.avatar : 'http://placehold.it/100x100' %>"alt="...">
+      			<img class="media-object" src="<%= u.avatar ? u.avatar : 'http://placehold.it/100x100' %>"alt="...">
     			</a>
   			</div>
   			<div class="media-body">
@@ -20,6 +21,7 @@
 				</a>
   			</div>
 		</div>
+	</div>
 	</div>
 	<% end %>
 </div>
