@@ -4,7 +4,11 @@
     <div class="col-sm-12 col-md-3">
 
 		<div class="thumbnail">
-      		<img src="<%= b.thumbnail ? b.thumbnail : 'http://placehold.it/200x200' %>" alt="...">
+      <% if b.category_id == 1 %>
+          <img src="<%= b.thumbnail ? b.thumbnail : 'http://placehold.it/200x200' %>" alt="...">
+          <% else %>
+          <img src="<%= b.url ? b.url : 'http://placehold.it/200x200' %>" alt="...">
+          <% end %>
       	<div class="caption">
         	<h5><%= b.name %></h5>
         	<p><%= b.description %></p>

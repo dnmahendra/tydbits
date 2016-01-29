@@ -29,6 +29,8 @@
 	        	<div class="caption">
 		        	<h5><%= b.name %></h5>
 		        	<p class="card-text"><%= b.description %></p>
+		        	<p>Added by</p>
+		        	<p><%= User.select(:name).where(id: b.user_id).first.name  %></p>
 		        	<form class="likes" action="/likes/<%= b.id %>" method="post">
 			        	<button type="submit" class="btn btn-link" <%= "disabled=disabled" if liked?(b.id) %>><i class="glyphicon glyphicon-heart"></i><span class="badge"><%= b.likes.count %></span>
 			        	</button>
